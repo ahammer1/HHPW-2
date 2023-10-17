@@ -8,7 +8,7 @@ export default function EditProduct() {
   const router = useRouter();
 
   const { id } = router.query;
-
+  console.warn(id, 'id');
   useEffect(() => {
     getSingleProduct(id).then(setEditItem);
   }, [id]);
