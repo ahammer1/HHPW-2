@@ -22,9 +22,9 @@ export default function OrderCard({ ordObj, onUpdate }) {
         <p className="card-text bold" style={{ marginBottom: '5px' }}>
           Payment type: {ordObj.paymentId}
         </p>
-        {/* <p className="card-text bold" style={{ marginBottom: '5px' }}>
+        <p className="card-text bold" style={{ marginBottom: '5px' }}>
           Status: {ordObj.statusId}
-        </p> */}
+        </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Link passHref href={`/Orders/${ordObj.id}`}>
             <Button variant="dark" className="mr-2">
@@ -46,7 +46,7 @@ export default function OrderCard({ ordObj, onUpdate }) {
 OrderCard.propTypes = {
   ordObj: PropTypes.shape({
     id: PropTypes.number,
-    // statusId: PropTypes.string,
+    statusId: PropTypes.string,
     paymentId: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,

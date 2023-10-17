@@ -100,7 +100,7 @@ ProductForm.propTypes = {
     name: PropTypes.string,
     price: PropTypes.number,
     description: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.number,
   }),
 };
 

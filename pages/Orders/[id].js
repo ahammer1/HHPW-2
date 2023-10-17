@@ -6,7 +6,7 @@ import { getSingleOrder } from '../../api/OrderData';
 
 export default function ViewOrderDetails() {
   const [orderDetails, setOrderDetails] = useState([]);
-  const [orderInformation, setOrderInformation] = useState([]);
+  const [, setOrderInformation] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const router = useRouter();
   const { id } = router.query;
@@ -18,6 +18,7 @@ export default function ViewOrderDetails() {
     });
     setTotalPrice(total);
   };
+
   const getProducts = () => {
     getOrderProducts(id).then((data) => {
       if (data) {
@@ -37,15 +38,17 @@ export default function ViewOrderDetails() {
       });
   };
 
-  console.warn(id, 'orderId');
-
   useEffect(() => {
     getProducts();
   }, [id]);
 
   useEffect(() => {
-    getSingleOrder().then(setOrderInformation);
-  }, []);
+    getSingleOrder(id).then(setOrderInformation);
+  }, [id]);
+
+  const handleCheckout = () => {
+    router.push(`/closeForm?orderId=${id}`);
+  };
 
   return (
     <>
@@ -58,14 +61,14 @@ export default function ViewOrderDetails() {
         Add Item
       </Button>
       <div className="text-white my-5 details">
-        <h2 className="card-title bold">Order Name: {orderInformation.name}</h2>
+        <h2 className="card-title bold">Order Name: {setOrderInformation.Name}</h2>
         <div className="mt-5 d-flex flex-wrap">
           {orderDetails.map((order) => (
             <div key={order?.id} className="text-white ms-5 details">
               <h1>Item Name: {order.name}</h1>
               <p>Price: {order.price}</p>
               <Button
-                variant="danger"
+                variant="dark"
                 onClick={() => handleDeleteItem(order.id)}
               >
                 Delete
@@ -75,6 +78,13 @@ export default function ViewOrderDetails() {
           ))}
         </div>
         <h3>Total Price: {totalPrice}</h3>
+        {/* Add a button for checkout */}
+        <Button
+          variant="dark"
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
       </div>
     </>
   );

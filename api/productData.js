@@ -53,13 +53,13 @@ const createProduct = (productObj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateProduct = (id) => new Promise((resolve, reject) => {
+const updateProduct = (id, updatedData) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/products/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(id),
+    body: JSON.stringify(id, updatedData),
   })
     .then(resolve)
     .catch(reject);
