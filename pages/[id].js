@@ -45,14 +45,10 @@ export default function CloseOrder() {
 
   const handleCloseOrder = (e) => {
     e.preventDefault();
-    if (orderObj.id) {
-      router.push(`/Orders/${orderObj.id}`);
-    } else {
-      const payload = { ...formInput };
-      closeOrder(payload).then(() => {
-        router.push('/');
-      });
-    }
+    const payload = formInput;
+    closeOrder(payload, id).then(() => {
+      router.push('/');
+    });
   };
 
   return (
@@ -79,16 +75,16 @@ export default function CloseOrder() {
         <Form.Group className="mb-3" controlId="formGridLevel">
           <Form.Label>Order Status</Form.Label>
           <Form.Select
-            aria-label="Status"
+            aria-label="status"
             name="Status"
             onChange={handleChange}
-            value={formInput.StatusId}
+            value={formInput.statusId}
             required
           >
             <option value="">Select an order status</option>
             {availableStatuses.map((Status) => (
               <option key={Status.id} value={Status.id}>
-                {Status.Status}
+                {Status.status}
               </option>
             ))}
           </Form.Select>
@@ -127,7 +123,7 @@ CloseOrder.propTypes = {
   orderObj: PropTypes.shape({
     orderid: PropTypes.number,
     paymentTypesId: PropTypes.string,
-    StatusId: PropTypes.string,
+    statusId: PropTypes.string,
     tip: PropTypes.string,
     review: PropTypes.string,
   }),
