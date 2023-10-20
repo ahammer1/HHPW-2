@@ -48,7 +48,7 @@ export default function ViewOrderDetails() {
   }, [id]);
 
   const handleCheckout = () => {
-    router.push(`/closeForm?orderId=${id}`);
+    router.push(`/${id}`);
   };
   return (
     <>

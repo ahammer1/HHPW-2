@@ -28,7 +28,7 @@ export default function OrderCard({ ordObj, onUpdate }) {
         <p className="card-text bold" style={{ marginBottom: '5px' }}>
           Tip:{ordObj.tip}
           <p className="card-text bold" style={{ marginBottom: '5px' }}>
-            Review: {ordObj.Review }
+            Review: {ordObj.review }
           </p>
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -56,7 +56,7 @@ OrderCard.propTypes = {
     paymentTypesId: PropTypes.number,
     name: PropTypes.string,
     tip: PropTypes.string,
-    Review: PropTypes.string,
+    review: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
