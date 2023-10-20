@@ -57,13 +57,13 @@ const createOrder = (orderObj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateOrder = (id) => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/orders/${id}`, {
+const updateOrder = (payload) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/orders/${payload.orderId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(id),
+    body: JSON.stringify(payload),
   })
     .then(resolve)
     .catch(reject);

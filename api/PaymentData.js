@@ -57,8 +57,8 @@ const createOrderPayments = (OrderId, PaymentTypeId) => new Promise((resolve, re
     .catch(reject);
 });
 
-const createOrderstatus = () => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/api/orderstatus`, {
+const createOrderStatus = (orderId) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/api/orderstatus${orderId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -97,6 +97,6 @@ export {
   createPayment,
   deletePayment,
   createOrderPayments,
-  createOrderstatus,
+  createOrderStatus,
   getOrderStatus,
 };

@@ -15,7 +15,6 @@ const initialState = {
 function ProductForm({ obj }) {
   const [formInput, setFormInput] = useState(initialState);
   const router = useRouter();
-  // const { user } = useAuth();
 
   useEffect(() => {
     if (obj.id) {

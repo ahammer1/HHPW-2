@@ -14,7 +14,7 @@ export default function AllOrder() {
   useEffect(() => {
     getAllOrder();
   }, []);
-
+  console.warn(Orders);
   return (
     <div className="text-center my-4">
       <Link href="/Orders/newOrder" passHref>

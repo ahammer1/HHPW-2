@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import {
-  createOrderPayments, createOrderstatus, getOrderStatus, getPayments,
+  getOrderStatus, getPayments,
 } from '../api/PaymentData';
+import { updateOrder } from '../api/OrderData';
 
-export default function CloseOrder() {
-  const [paymentId, setPaymentId] = useState('');
-  const [statusId, setStatusId] = useState('');
+const initialState = {
+  StatusId: 0,
+  paymentTypesId: 0,
+  tip: '',
+  Review: '',
+};
+
+export default function CloseOrder({ orderObj }) {
+  const [formInput, setFormInput] = useState(initialState);
   const [availableStatuses, setAvailableStatuses] = useState([]);
   const [availablePaymentTypes, setAvailablePaymentTypes] = useState([]);
 
@@ -15,18 +23,29 @@ export default function CloseOrder() {
   const { orderId } = router.query;
 
   useEffect(() => {
-    getOrderStatus().then(setAvailableStatuses);
+    if (orderObj.orderId) setFormInput(orderObj);
+    getOrderStatus([]).then(setAvailableStatuses);
     getPayments().then(setAvailablePaymentTypes);
-  }, []);
+  }, [orderObj]);
 
-  const handleCloseOrder = () => {
-    createOrderPayments(orderId, paymentId)
-      .then(() => {
-        createOrderstatus(orderId, statusId)
-          .then(() => {
-            router.push(`/Orders/${orderId}`);
-          });
-      });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleCloseOrder = (e) => {
+    e.preventDefault();
+
+    const updatedOrder = {
+      StatusId: formInput.StatusId,
+      paymentTypeId: formInput.paymentTypesId,
+    };
+
+    updateOrder(orderId, updatedOrder)
+      .then(() => router.push('/'));
   };
 
   return (
@@ -38,14 +57,14 @@ export default function CloseOrder() {
           <Form.Select
             aria-label="Payment Type"
             name="paymentType"
-            onChange={(e) => setPaymentId(e.target.value)}
-            value={paymentId}
+            onChange={handleChange}
+            value={orderObj.paymentTypesId}
             required
           >
             <option value="">Select a payment type</option>
-            {availablePaymentTypes.map((paymentType) => (
-              <option key={paymentType.id} value={paymentType.id}>
-                {paymentType.name}
+            {availablePaymentTypes.map((paymentTypes) => (
+              <option key={paymentTypes.id} value={paymentTypes.id}>
+                {paymentTypes.type}
               </option>
             ))}
           </Form.Select>
@@ -54,18 +73,40 @@ export default function CloseOrder() {
           <Form.Label>Order Status</Form.Label>
           <Form.Select
             aria-label="Status"
-            name="orderStatus"
-            onChange={(e) => setStatusId(e.target.value)}
-            value={statusId}
+            name="Status"
+            onChange={handleChange}
+            value={orderObj.StatusId}
             required
           >
             <option value="">Select an order status</option>
-            {availableStatuses.map((status) => (
-              <option key={status.id} value={status.id}>
-                {status.name}
+            {availableStatuses.map((Status) => (
+              <option key={Status.id} value={Status.id}>
+                {Status.Status}
               </option>
             ))}
           </Form.Select>
+        </Form.Group>
+        <Form.Group controlId="formGridContent">
+          <Form.Label>Enter Tip</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Tip"
+            name="tip"
+            value={formInput.tip}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="formGridContent">
+          <Form.Label>Enter Review</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Review"
+            name="review"
+            value={formInput.review}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
         <Button variant="primary" onClick={handleCloseOrder}>
           Enjoy!
@@ -74,3 +115,16 @@ export default function CloseOrder() {
     </div>
   );
 }
+
+CloseOrder.propTypes = {
+  orderObj: PropTypes.shape({
+    orderId: PropTypes.number,
+    paymentTypesId: PropTypes.number,
+    StatusId: PropTypes.number,
+    tip: PropTypes.string,
+    Review: PropTypes.string,
+  }),
+};
+CloseOrder.defaultProps = {
+  orderObj: initialState,
+};
