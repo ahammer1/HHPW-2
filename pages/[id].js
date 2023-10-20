@@ -5,26 +5,30 @@ import { Button, Form } from 'react-bootstrap';
 import {
   getOrderStatus, getPayments,
 } from '../api/PaymentData';
-import { updateOrder } from '../api/OrderData';
+import { closeOrder, getSingleOrder } from '../api/OrderData';
 
 const initialState = {
-  StatusId: 0,
-  paymentTypesId: 0,
+  statusId: '',
+  paymentTypesId: '',
   tip: '',
-  Review: '',
+  review: '',
 };
 
-export default function CloseOrder({ orderObj }) {
+export default function CloseOrder() {
   const [formInput, setFormInput] = useState(initialState);
   const [availableStatuses, setAvailableStatuses] = useState([]);
   const [availablePaymentTypes, setAvailablePaymentTypes] = useState([]);
-
+  const [orderObj, setOrderObj] = useState([]);
   const router = useRouter();
-  const { orderId } = router.query;
+  const { id } = router.query;
 
   useEffect(() => {
-    if (orderObj.orderId) setFormInput(orderObj);
-    getOrderStatus([]).then(setAvailableStatuses);
+    getSingleOrder(id).then(setOrderObj);
+  }, [id]);
+
+  useEffect(() => {
+    if (orderObj) setFormInput(orderObj);
+    getOrderStatus().then(setAvailableStatuses);
     getPayments().then(setAvailablePaymentTypes);
   }, [orderObj]);
 
@@ -36,29 +40,32 @@ export default function CloseOrder({ orderObj }) {
     }));
   };
 
+  console.log(id, formInput);
+  console.log(orderObj);
+
   const handleCloseOrder = (e) => {
     e.preventDefault();
-
-    const updatedOrder = {
-      StatusId: formInput.StatusId,
-      paymentTypeId: formInput.paymentTypesId,
-    };
-
-    updateOrder(orderId, updatedOrder)
-      .then(() => router.push('/'));
+    if (orderObj.id) {
+      router.push(`/Orders/${orderObj.id}`);
+    } else {
+      const payload = { ...formInput };
+      closeOrder(payload).then(() => {
+        router.push('/');
+      });
+    }
   };
 
   return (
     <div>
       <h1>Check Out</h1>
       <Form>
-        <Form.Group controlId="paymentType">
+        <Form.Group controlId="paymentTypesId">
           <Form.Label>Payment Type</Form.Label>
           <Form.Select
             aria-label="Payment Type"
-            name="paymentType"
+            name="paymentTypesId"
             onChange={handleChange}
-            value={orderObj.paymentTypesId}
+            value={formInput.paymentTypesId}
             required
           >
             <option value="">Select a payment type</option>
@@ -75,7 +82,7 @@ export default function CloseOrder({ orderObj }) {
             aria-label="Status"
             name="Status"
             onChange={handleChange}
-            value={orderObj.StatusId}
+            value={formInput.StatusId}
             required
           >
             <option value="">Select an order status</option>
@@ -118,11 +125,11 @@ export default function CloseOrder({ orderObj }) {
 
 CloseOrder.propTypes = {
   orderObj: PropTypes.shape({
-    orderId: PropTypes.number,
-    paymentTypesId: PropTypes.number,
-    StatusId: PropTypes.number,
+    orderid: PropTypes.number,
+    paymentTypesId: PropTypes.string,
+    StatusId: PropTypes.string,
     tip: PropTypes.string,
-    Review: PropTypes.string,
+    review: PropTypes.string,
   }),
 };
 CloseOrder.defaultProps = {

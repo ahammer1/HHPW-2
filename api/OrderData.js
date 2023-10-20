@@ -41,6 +41,7 @@ const getSingleOrder = (id) => new Promise((resolve, reject) => {
       'Content-Type': 'application/json',
     },
   })
+    .then((response) => response.json())
     .then((data) => resolve(data))
     .catch(reject);
 });
@@ -58,7 +59,19 @@ const createOrder = (orderObj) => new Promise((resolve, reject) => {
 });
 
 const updateOrder = (payload) => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/orders/${payload.orderId}`, {
+  fetch(`${dbUrl}/orders/${payload.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const closeOrder = (payload, id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/orders/${id}/close`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -75,4 +88,5 @@ export {
   deleteOrder,
   getSingleOrder,
   updateOrder,
+  closeOrder,
 };

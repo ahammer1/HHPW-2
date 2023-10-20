@@ -27,7 +27,7 @@ function OrderForm({ orderObj }) {
       [name]: value,
     }));
   };
-
+  console.log(orderObj);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (orderObj.id) {
