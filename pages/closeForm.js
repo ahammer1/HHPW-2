@@ -11,7 +11,7 @@ const initialState = {
   StatusId: 0,
   paymentTypesId: 0,
   tip: '',
-  Review: '',
+  review: '',
 };
 
 export default function CloseOrder({ orderObj }) {
@@ -122,7 +122,7 @@ CloseOrder.propTypes = {
     paymentTypesId: PropTypes.number,
     StatusId: PropTypes.number,
     tip: PropTypes.string,
-    Review: PropTypes.string,
+    review: PropTypes.string,
   }),
 };
 CloseOrder.defaultProps = {
