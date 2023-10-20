@@ -23,6 +23,18 @@ const getOrderProducts = (orderId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getOrderPayments = (orderId) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/orderPayments/${orderId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
 const deleteProductOrders = (ProductId, OrderId) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/ProductOrders/${ProductId}/${OrderId}`, {
     method: 'DELETE',
@@ -41,5 +53,6 @@ const deleteProductOrders = (ProductId, OrderId) => new Promise((resolve, reject
 export {
   createProductOrders,
   getOrderProducts,
+  getOrderPayments,
   deleteProductOrders,
 };

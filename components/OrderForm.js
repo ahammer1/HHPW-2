@@ -34,7 +34,7 @@ function OrderForm({ orderObj }) {
       updateOrder(formInput)
         .then(() => router.push(`/Orders/${orderObj.id}`));
     } else {
-      const payload = { ...formInput, Id: orderObj.id };
+      const payload = { ...formInput };
       createOrder(payload).then(({ name }) => {
         const patchPayload = { id: name };
         updateOrder(patchPayload).then(() => {

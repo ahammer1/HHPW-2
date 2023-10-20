@@ -20,10 +20,16 @@ export default function OrderCard({ ordObj, onUpdate }) {
           Name: {ordObj.name}
         </Card.Title>
         <p className="card-text bold" style={{ marginBottom: '5px' }}>
-          Payment type: {ordObj.paymentId}
+          Payment type: {ordObj.paymentTypesId === 0 ? 'Visa' : ' MasterCard' }
         </p>
         <p className="card-text bold" style={{ marginBottom: '5px' }}>
-          Status: {ordObj.statusId}
+          Status:  {ordObj.statusId === 0 ? 'Open' : 'Closed' }
+        </p>
+        <p className="card-text bold" style={{ marginBottom: '5px' }}>
+          Tip:{ordObj.tip}
+          <p className="card-text bold" style={{ marginBottom: '5px' }}>
+            Review: {ordObj.Review }
+          </p>
         </p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Link passHref href={`/Orders/${ordObj.id}`}>
@@ -46,9 +52,11 @@ export default function OrderCard({ ordObj, onUpdate }) {
 OrderCard.propTypes = {
   ordObj: PropTypes.shape({
     id: PropTypes.number,
-    statusId: PropTypes.string,
-    paymentId: PropTypes.string,
+    statusId: PropTypes.number,
+    paymentTypesId: PropTypes.number,
     name: PropTypes.string,
+    tip: PropTypes.string,
+    Review: PropTypes.string,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

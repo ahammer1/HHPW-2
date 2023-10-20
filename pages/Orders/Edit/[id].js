@@ -7,11 +7,11 @@ export default function EditOrder() {
   const [editItem, setEditItem] = useState({});
   const router = useRouter();
 
-  const { id } = router.query;
+  const { Id } = router.query;
 
   useEffect(() => {
-    getSingleOrder(id).then(setEditItem);
-  }, [id]);
+    getSingleOrder(Id).then(setEditItem);
+  }, [Id]);
 
   return (<OrderForm obj={editItem} />);
 }

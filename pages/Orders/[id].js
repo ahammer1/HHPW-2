@@ -7,6 +7,7 @@ import { getSingleOrder } from '../../api/OrderData';
 export default function ViewOrderDetails() {
   const [orderDetails, setOrderDetails] = useState([]);
   const [, setOrderInformation] = useState([]);
+  // const [, setPayment] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const router = useRouter();
   const { id } = router.query;
@@ -49,10 +50,11 @@ export default function ViewOrderDetails() {
   const handleCheckout = () => {
     router.push(`/closeForm?orderId=${id}`);
   };
-
   return (
     <>
       <h1>Orders Items</h1>
+      <h2 className="card-title bold">Customer Name: {setOrderInformation.Name}</h2>
+      {/* <p>payment type: {setPayment.paymentId}</p> */}
       <Button
         variant="dark"
         className="mr-2"
@@ -61,7 +63,6 @@ export default function ViewOrderDetails() {
         Add Item
       </Button>
       <div className="text-white my-5 details">
-        <h2 className="card-title bold">Order Name: {setOrderInformation.Name}</h2>
         <div className="mt-5 d-flex flex-wrap">
           {orderDetails.map((order) => (
             <div key={order?.id} className="text-white ms-5 details">
